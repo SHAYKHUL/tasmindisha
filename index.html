@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasmin Akhtar Disha - Digital Marketer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+    <style>
+   /* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+/* Modal Box */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 450px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Modal Content */
+.modal-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.modal h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #1a1a40;
+}
+
+.modal p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+/* Close Button */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #ff4c4c;
+}
+
+/* Modal Buttons */
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.modal-btn.primary {
+    background: #00bcd4;
+    color: white;
+}
+
+.modal-btn.secondary {
+    background: #ddd;
+    color: #333;
+}
+
+/* Floating Upgrade Button */
+.floating-upgrade {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #00bcd4, #008c9e);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 188, 212, 0.4);
+    transition: all 0.3s ease-in-out;
+}
+
+.floating-upgrade:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 188, 212, 0.6);
+}
+
+/* Floating Chat Button with AI Icon */
+.floating-chat {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: linear-gradient(135deg, #00bcd4, #008c9e);
+    color: white;
+    width: 70px;  /* Set the width */
+    height: 70px;  /* Set the height to the same value as width */
+    border-radius: 50%;  /* This ensures the button is round */
+    font-size: 30px;  /* Larger font size for the icon */
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 5px 20px rgba(0, 188, 212, 0.4);
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.floating-chat:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 188, 212, 0.6);
+}
+
+/* Chat Modal */
+.chat-modal {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 350px;
+    max-width: 90%;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow: hidden;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.chat-modal.show {
+    transform: scale(1);
+    opacity: 1;
+    display: block;
+}
+
+/* Chat Header */
+.chat-header {
+    background: #00bcd4;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+/* Chat Body */
+.chat-body {
+    padding: 10px;
+    height: 320px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #00bcd4 #f0f0f0;
+    scroll-behavior: smooth;
+}
+
+/* Messages */
+.chat-message {
+    padding: 10px;
+    border-radius: 8px;
+    max-width: 80%;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.chat-message.bot {
+    background: #f0f0f0;
+    align-self: flex-start;
+}
+
+.chat-message.user {
+    background: #00bcd4;
+    color: white;
+    align-self: flex-end;
+}
+
+/* Typing Indicator */
+.typing {
+    color: #888;
+    font-style: italic;
+    align-self: flex-start;
+}
+
+/* Upgrade Section */
+.upgrade-section {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+}
+
+.upgrade-btn {
+    background: #ff5722;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.upgrade-btn:hover {
+    background: #e64a19;
+}
+
+/* Chat Footer */
+.chat-footer {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ddd;
+}
+
+.chat-footer input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.chat-footer button {
+    background: #00bcd4;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+<!-- Preloader -->
+<div id="preloader">
+    <div class="loader"></div>
+</div>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Tasmin Disha</div>
+        <nav>
+            <ul id="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="profile.jpg" alt="Tasmin Akhtar Disha" class="profile-img">
+            <h1>Mst Tasmin Akhtar Disha</h1>
+            <p>Digital Marketing & Branding Specialist</p>
+            <a href="#contact" class="btn">Get In Touch</a>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <img src="profile.jpg" alt="Tasmin Akhtar Disha" class="about-img">
+        <p>Helping businesses grow through strategic social media marketing, creative branding, and high-quality designs.</p>
+    </section>
+
+    <!-- Stats Counter -->
+    <section class="stats">
+        <h2>My Achievements</h2>
+        <div class="stats-grid">
+            <div class="stat">
+                <h3><span id="clients">0</span>+</h3>
+                <p>Happy Clients</p>
+            </div>
+            <div class="stat">
+                <h3><span id="projects">0</span>+</h3>
+                <p>Completed Projects</p>
+            </div>
+            <div class="stat">
+                <h3><span id="years">0</span>+</h3>
+                <p>Years of Experience</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Services -->
+<section id="services" class="services">
+    <h2>My Services</h2>
+    <div class="services-grid">
+        <div class="service-item">
+            <img src="facebook-marketing.jpg" alt="Facebook Marketing">
+            <h3>Facebook Marketing</h3>
+            <p>Boost your brand’s visibility and engagement with expert Facebook advertising strategies.</p>
+        </div>
+        <div class="service-item">
+            <img src="logo-design.jpg" alt="Logo Design">
+            <h3>Logo Design</h3>
+            <p>Get a professional and eye-catching logo that represents your brand identity.</p>
+        </div>
+        <div class="service-item">
+            <img src="photo-editing.jpg" alt="Photo Background Removal">
+            <h3>Photo Background Removal</h3>
+            <p>Remove or replace backgrounds for professional and polished images.</p>
+        </div>
+    </div>
+</section>
+
+    <!-- Portfolio Section -->
+<section id="portfolio" class="portfolio">
+    <h2>My Work</h2>
+
+    <!-- Portfolio Filter Buttons -->
+    <div class="portfolio-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="logo">Logo Design</button>
+        <button class="filter-btn" data-filter="marketing">Marketing</button>
+    </div>
+
+    <div class="portfolio-grid">
+        <div class="portfolio-item" data-category="logo">
+            <img src="project1.jpg" alt="Project 1">
+            <div class="portfolio-overlay">
+                <h3>Logo Design</h3>
+                <p>Modern and sleek business logos.</p>
+                <button class="view-btn" data-img="project1.jpg">View</button>
+            </div>
+        </div>
+        <div class="portfolio-item" data-category="marketing">
+            <img src="project2.jpg" alt="Project 2">
+            <div class="portfolio-overlay">
+                <h3>Facebook Ad Campaign</h3>
+                <p>Boosted brand engagement.</p>
+                <button class="view-btn" data-img="project2.jpg">View</button>
+            </div>
+        </div>
+        <div class="portfolio-item" data-category="marketing">
+            <img src="project3.jpg" alt="Project 3">
+            <div class="portfolio-overlay">
+                <h3>Social Media Branding</h3>
+                <p>Created engaging content.</p>
+                <button class="view-btn" data-img="project3.jpg">View</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Popup -->
+<div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img id="lightbox-img" src="" alt="Portfolio Image">
+</div>
+    <!-- Testimonials -->
+<section id="testimonials" class="testimonials">
+    <h2>What Clients Say</h2>
+    <div class="testimonial-container">
+        <div class="testimonial active">
+            <p>"Tasmin helped me grow my business with her amazing marketing strategies. Highly recommended!"</p>
+            <h4>- John Doe</h4>
+        </div>
+        <div class="testimonial">
+            <p>"Fantastic service! My brand got a complete makeover and engagement skyrocketed."</p>
+            <h4>- Sarah Smith</h4>
+        </div>
+        <div class="testimonial">
+            <p>"Exceptional work! Tasmin's expertise in social media marketing gave my business a huge boost."</p>
+            <h4>- Michael Lee</h4>
+        </div>
+    </div>
+
+    <!-- Testimonial Navigation -->
+    <div class="testimonial-nav">
+        <span class="dot active" onclick="showTestimonial(0)"></span>
+        <span class="dot" onclick="showTestimonial(1)"></span>
+        <span class="dot" onclick="showTestimonial(2)"></span>
+    </div>
+</section>
+
+    <section id="faq" class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-container">
+        <div class="faq-item">
+            <button class="faq-question">What services do you offer? <span>+</span></button>
+            <div class="faq-answer">
+                <p>I offer Facebook marketing, logo design, and photo background removal services.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">How can I contact you? <span>+</span></button>
+            <div class="faq-answer">
+                <p>You can contact me via email at tasnimdisha581@gmail.com or through the contact form.</p>
+            </div>
+        </div>
+
+        <div class="faq-item">
+            <button class="faq-question">Do you offer custom packages? <span>+</span></button>
+            <div class="faq-answer">
+                <p>Yes, I provide customized services based on your business needs.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form id="contact-form">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+
+<section id="premium-offer" class="premium-offer">
+    <div class="premium-content">
+        <h2>🚀 Upgrade to Premium – Elevate Your Brand!</h2>
+        <p>Unlock exclusive features like Live Chat, AI Support, SEO, and more.</p>
+        
+        <div class="premium-features">
+            <div class="feature">
+                <img src="live-chat.png" alt="Live Chat">
+                <h3>Live Chat Support</h3>
+                <p>Talk to visitors in real-time and increase engagement.</p>
+            </div>
+            <div class="feature">
+                <img src="ai-bot.png" alt="AI Support">
+                <h3>AI-Powered Assistant</h3>
+                <p>Auto-reply to FAQs & guide visitors with smart AI responses.</p>
+            </div>
+            <div class="feature">
+                <img src="seo.png" alt="SEO Optimization">
+                <h3>SEO Optimization</h3>
+                <p>Rank higher on Google and attract more clients effortlessly.</p>
+            </div>
+            <div class="feature">
+                <img src="custom-domain.png" alt="Custom Domain">
+                <h3>Custom Domain & Email</h3>
+                <p>Get a professional domain like <b>tasminakhtar.com</b>.</p>
+            </div>
+            <div class="feature">
+                <img src="animation.png" alt="Advanced Animations">
+                <h3>Interactive Animations</h3>
+                <p>Make your website more engaging with stunning effects.</p>
+            </div>
+            <div class="feature">
+                <img src="cms.png" alt="Portfolio CMS">
+                <h3>Easy Portfolio Management</h3>
+                <p>Update your projects easily with a powerful CMS.</p>
+            </div>
+        </div>
+
+        <a href="#contact" class="btn premium-btn">Upgrade Now</a>
+    </div>
+</section>
+
+<!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay" onclick="togglePremiumModal()"></div>
+
+    <!-- Modal -->
+    <div id="premiumModal" class="modal">
+        <button class="modal-close" onclick="togglePremiumModal()">&times;</button>
+        <div class="modal-content">
+            <h2>Upgrade to Premium</h2>
+            <p>Unlock exclusive features like Live Chat, AI Support, SEO, and more!</p>
+            <div class="modal-buttons">
+                <button class="modal-btn primary">Upgrade Now</button>
+                <button class="modal-btn secondary" onclick="togglePremiumModal()">Maybe Later</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+<footer>
+    <p>&copy; 2025 Mst Tasmin Akhtar Disha | All Rights Reserved</p>
+    <p>Developed & Powered by <a href="https://algolizen.netlify.app/" target="_blank">Algolizen</a></p>
+    
+    <!-- Social Media Links -->
+    <div class="social-links">
+        <a href="https://www.facebook.com/yourprofile" target="_blank">
+            <img src="facebook-icon.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/yourprofile" target="_blank">
+            <img src="instagram.png" alt="Instagram">
+        </a>
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">
+            <img src="linkedin.png" alt="LinkedIn">
+        </a>
+        <a href="https://twitter.com/yourprofile" target="_blank">
+            <img src="twitter.png" alt="Twitter">
+        </a>
+    </div>
+</footer>
+<!-- Floating Chat Button with AI Icon -->
+    <div class="floating-chat" onclick="toggleChat()">
+        <i class="fa fa-robot"></i> <!-- AI icon -->
+    </div>
+
+    <!-- Chat Modal -->
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-header">
+            <span>AI Assistant</span>
+            <button class="chat-close" onclick="toggleChat()">&times;</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-message bot">Hello! You can try this AI chat with a limited demo.</div>
+        </div>
+        <div class="chat-footer" id="chatFooter">
+            <input type="text" id="userInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+        <div class="upgrade-section" id="upgradeSection" style="display: none;">
+            <p>Hey Tasmin Disha, please upgrade to premium to implement this AI assistant to your website.</p>
+            <button class="upgrade-btn" onclick="window.location.href='pay.html';">Upgrade Now</button>
+        </div>
+    </div>
+  <!-- Floating Upgrade Button -->
+    <div class="floating-upgrade" onclick="togglePremiumModal()">
+        🚀 Upgrade to Premium
+    </div>
+       <script>
+    function togglePremiumModal() {
+        const modal = document.getElementById("premiumModal");
+        const overlay = document.getElementById("modalOverlay");
+        const isVisible = modal.style.display === "block";
+
+        modal.style.display = isVisible ? "none" : "block";
+        overlay.style.display = isVisible ? "none" : "block";
+    }
+
+    // Auto-load modal after 2 seconds when the page loads
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(togglePremiumModal, 5000);
+    });
+    
+    //JavaScript for chat
+    let messageCount = 0;
+const messageLimit = 3;  // Limit before forcing upgrade
+
+// Toggle Chat Modal
+function toggleChat() {
+    const chatModal = document.getElementById("chatModal");
+    chatModal.classList.toggle("show");
+}
+
+// Handle Enter Key Press
+function handleKeyPress(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+// Send Message to AI
+async function sendMessage() {
+    if (messageCount >= messageLimit) {
+        showUpgrade();
+        return;
+    }
+
+    const userInput = document.getElementById("userInput").value.trim();
+    if (!userInput) return;
+
+    displayMessage(userInput, "user");
+    document.getElementById("userInput").value = "";
+
+    // Show typing effect
+    const chatBody = document.getElementById("chatBody");
+    const typingIndicator = document.createElement("div");
+    typingIndicator.classList.add("chat-message", "typing");
+    typingIndicator.textContent = "AI is typing...";
+    chatBody.appendChild(typingIndicator);
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    // Get AI Response
+    const aiResponse = await getAIResponse(userInput);
+
+    // Remove typing effect and show response
+    chatBody.removeChild(typingIndicator);
+    displayMessage(aiResponse, "bot");
+
+    messageCount++;
+    if (messageCount >= messageLimit) {
+        showUpgrade();
+    }
+}
+
+// Display Chat Message
+function displayMessage(message, sender) {
+    const chatBody = document.getElementById("chatBody");
+    const messageDiv = document.createElement("div");
+    messageDiv.classList.add("chat-message", sender);
+    messageDiv.textContent = message;
+    chatBody.appendChild(messageDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+// Show Upgrade Option
+function showUpgrade() {
+    document.getElementById("chatFooter").style.display = "none";
+    document.getElementById("upgradeSection").style.display = "block";
+}
+
+// Get AI Response (Simple AI Responses)
+async function getAIResponse(userMessage) {
+    const responses = {
+        "hello": "Hi there! How can I help?",
+        "how are you": "I'm just an AI, but I'm here to assist you!",
+        "bye": "Goodbye! Have a nice day!"
+    };
+    return responses[userMessage.toLowerCase()] || "You need to upgrade to get access to the advanced AI model and smart responses.";
+}
+
+</script>
+</body>
+</html>
